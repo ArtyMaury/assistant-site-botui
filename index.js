@@ -1,3 +1,5 @@
+//#region init
+
 import Vue from 'vue'
 import BotUI from 'botui'
 import {
@@ -20,11 +22,17 @@ const botui = BotUI('botui-app', {
     vue: Vue // pass the dependency.
 })
 
+//#endregion
+
+//#region Conversation
 
 requestEventChatbot('WELCOME')
     .then(askInput)
     .then(askChatbot)
 
+//#endregion
+
+//#region functions
 
 function askInput() {
     return botui.action.text({
@@ -75,9 +83,15 @@ function addMessagesFromChatbot(messages) {
 function addMessageFromChatbot(message) {
     if (message.type == "simple_response") {
         return addMessage(message.textToSpeech)
-    } else if (message.type == "suggestion_chips") {
+    }
+    else if (message.type == 0) {
+        return addMessage(message.speech)
+    }
+    // Pour le moment les suggestions sont dificiles à gérer
+    /*else if (message.type == "suggestion_chips") {
         return addSuggestionsFromChatbot(message.suggestions)
-    } else {
+    } */
+    else {
         return new Promise((res, rej) => {
             res(0)
         })
@@ -90,6 +104,9 @@ function requestEventChatbot(req) {
             return clearChatbotResponse(res)
         })
         .then(addMessagesFromChatbot)
+        .catch(err => {
+            console.log(err);
+        })
 }
 
 function askChatbot(req) {
@@ -98,12 +115,20 @@ function askChatbot(req) {
             return clearChatbotResponse(res)
         })
         .then(addMessagesFromChatbot)
+        .catch(err => {
+            console.log(err);
+        })
 }
 
 function clearChatbotResponse(res) {
     if (res.status.code == 200) {
         return res.result.fulfillment.messages
     } else {
-        throw "ERROR: " + res.status.errorType
+        throw res.status
     }
 }
+
+
+
+
+//#endregion

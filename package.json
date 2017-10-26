@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "watch": "./node_modules/.bin/webpack --watch",
-    "build": "./node_modules/.bin/webpack"
+    "build": "./node_modules/.bin/webpack",
+    "start": "./node_modules/.bin/webpack-dev-server --open"
   },
   "author": "Arthur Maury",
   "license": "ISC",
@@ -15,6 +16,7 @@
   },
   "devDependencies": {
     "api-ai-javascript": "^2.0.0-beta.21",
-    "webpack": "^3.8.1"
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.3"
   }
 }
