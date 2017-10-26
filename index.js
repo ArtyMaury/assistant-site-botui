@@ -26,13 +26,15 @@ const botui = BotUI('botui-app', {
 
 //#region Conversation
 
-requestEventChatbot('WELCOME')
-    .then(askInput)
-    .then(askChatbot)
+keepAsking(requestEventChatbot('WELCOME'))
 
 //#endregion
 
 //#region functions
+
+function keepAsking(promise) {
+    return promise.then(askInput).then(askChatbot)
+}
 
 function askInput() {
     return botui.action.text({
@@ -83,8 +85,7 @@ function addMessagesFromChatbot(messages) {
 function addMessageFromChatbot(message) {
     if (message.type == "simple_response") {
         return addMessage(message.textToSpeech)
-    }
-    else if (message.type == 0) {
+    } else if (message.type == 0) {
         return addMessage(message.speech)
     }
     // Pour le moment les suggestions sont dificiles à gérer
@@ -110,14 +111,14 @@ function requestEventChatbot(req) {
 }
 
 function askChatbot(req) {
-    return client.textRequest(req)
+    return keepAsking(client.textRequest(req)
         .then(res => {
             return clearChatbotResponse(res)
         })
         .then(addMessagesFromChatbot)
         .catch(err => {
             console.log(err);
-        })
+        }))
 }
 
 function clearChatbotResponse(res) {
@@ -127,8 +128,6 @@ function clearChatbotResponse(res) {
         throw res.status
     }
 }
-
-
 
 
 //#endregion
