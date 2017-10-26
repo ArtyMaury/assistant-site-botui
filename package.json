@@ -1,0 +1,20 @@
+{
+  "name": "assistant-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "./node_modules/.bin/webpack --watch",
+    "build": "./node_modules/.bin/webpack"
+  },
+  "author": "Arthur Maury",
+  "license": "ISC",
+  "dependencies": {
+    "botui": "^0.3.4",
+    "vue": "^2.5.2"
+  },
+  "devDependencies": {
+    "api-ai-javascript": "^2.0.0-beta.21",
+    "webpack": "^3.8.1"
+  }
+}
