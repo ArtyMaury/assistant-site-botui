@@ -15,12 +15,17 @@ start index.html
 
 On utilise Webpack pour générer [dist/bundle.js](dist/bundle.js) à partir de [index.js](index.js)
 
-Après avoir cloné le repository, lancer webpack en mode watch
-
 ```
 npm i
-npm run watch
-start dist/index.html
+npm run start
+```
+
+On utilise Gulp pour générer [botui/build/botui.min.js](botui/build/botui.min.js) à partir de [botui/src/scripts/botui.js](botui/src/scripts/botui.js)
+
+```
+cd botui
+npm i
+gulp watch
 ```
 
 ## Liens utiles

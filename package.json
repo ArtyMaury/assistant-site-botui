@@ -11,7 +11,6 @@
   "author": "Arthur Maury",
   "license": "ISC",
   "dependencies": {
-    "botui": "^0.3.4",
     "vue": "^2.5.2"
   },
   "devDependencies": {

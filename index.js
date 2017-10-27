@@ -1,7 +1,7 @@
 //#region init
 
 import Vue from 'vue'
-import BotUI from 'botui'
+import BotUI from './botui/build/botui.min.js'
 import {
     ApiAiClient,
     ApiAiConstants,
@@ -26,7 +26,7 @@ const botui = BotUI('botui-app', {
 
 //#region Conversation
 
-keepAsking(requestEventChatbot('WELCOME'))
+requestEventChatbot('WELCOME')
 
 //#endregion
 
@@ -74,6 +74,12 @@ function addMessagesFromChatbot(messages) {
     var promise = new Promise((res, rej) => {
         res(0)
     });
+    messages.sort((m1, m2) => {
+        if (m1.type == 'suggestion_chips'){
+            return 1
+        }
+        return 0
+    })
     messages.forEach(message => {
         promise = promise.then(() => {
             return addMessageFromChatbot(message)
@@ -89,9 +95,9 @@ function addMessageFromChatbot(message) {
         return addMessage(message.speech)
     }
     // Pour le moment les suggestions sont dificiles à gérer
-    /*else if (message.type == "suggestion_chips") {
+    else if (message.type == "suggestion_chips") {
         return addSuggestionsFromChatbot(message.suggestions)
-    } */
+    }
     else {
         return new Promise((res, rej) => {
             res(0)
@@ -100,14 +106,14 @@ function addMessageFromChatbot(message) {
 }
 
 function requestEventChatbot(req) {
-    return client.eventRequest(req)
+    return keepAsking(client.eventRequest(req)
         .then(res => {
             return clearChatbotResponse(res)
         })
         .then(addMessagesFromChatbot)
         .catch(err => {
             console.log(err);
-        })
+        }))
 }
 
 function askChatbot(req) {
